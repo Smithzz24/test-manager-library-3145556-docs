@@ -25,6 +25,8 @@ The specification is written for Python and .NET, but the challenge is **not** i
 
 The business requirements defined by the specification—user stories, acceptance criteria, rules, API contract, and data model—must be preserved. Technology-specific requirements must be translated to React and Laravel.
 
+For the confirmed mapping and unresolved decisions, see the [Laravel and React implementation guide](laravel-react-adaptation.md).
+
 ## The assessment is not about writing code
 
 The main purpose is to assess **Spec-Driven Development (SDD)**: how well a specification is read, interpreted, and applied when moving to a different stack. Code is the means, not the end.
