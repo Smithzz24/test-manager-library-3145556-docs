@@ -103,7 +103,7 @@ The HTTP contract is **language-independent**: an implementation in React + Lara
 | POST | `/books` | admin | Creates a book |
 | PUT | `/books/{id}` | admin | Replaces title, author, category, and total copies |
 | DELETE | `/books/{id}` | admin | Soft delete |
-| GET | `/books/{id}/cover` | TBD (owner confirmation required) | Returns the cover binary or 404 |
+| GET | `/books/{id}/cover` | Authentication required; authorized role to be confirmed | Returns the cover binary or 404 |
 | PUT | `/books/{id}/cover` | admin | Uploads a cover (`multipart/form-data`, field `file`) |
 | DELETE | `/books/{id}/cover` | admin | Removes the cover |
 
@@ -118,7 +118,7 @@ Book (response):
 ```
 
 `POST /books` request fields: `title`, `author`, `isbn`, `category_id`, `total_copies`. The server calculates available copies.
-`cover_key` is an opaque key: use `GET /books/{id}/cover` to display the cover; it returns the binary content or 404.
+`cover_key` is an opaque key: use `GET /books/{id}/cover` to display the cover; it returns the binary content or 404. This download requires authentication under CA-01.3; its authorized role remains pending. The cover binary and multipart upload are the documented exceptions to the JSON convention.
 
 ### 3.5 Members
 
@@ -142,7 +142,7 @@ Book (response):
 
 ```json
 // Request (1 to 3 items, no duplicate books)
-{ "member_id": "…", "items": [ { "book_id": "…" }, { "book_id": "…" } ] }
+{ "member_id": "…", "items": [ { "book_id": "…" } ] }
 // 201
 {
   "id": "…", "member_id": "…", "loaned_at": "2026-10-14T14:15:00Z", "status": "open",
@@ -152,6 +152,8 @@ Book (response):
   ]
 }
 ```
+
+This example requests one book and returns its one loan item. A request may contain 1 to 3 distinct books; a successful loan must record all requested items, not a partial subset (CA-06.3).
 
 `status` is calculated: `open` (there are unreturned items and none are overdue), `overdue` (at least one unreturned item is overdue), `closed` (all items have been returned).
 
@@ -190,7 +192,9 @@ One row per frozen `book_id + book_title + category_name`. Order: `times_borrowe
 
 The following details are not settled by the current specification. Do not infer behavior until the project owner confirms it:
 
-- **Cover download authorization:** the contract mentions `GET /books/{id}/cover` and says it returns the binary or 404, but does not state the required role. The role is intentionally marked as pending in the endpoint table.
+- **Cover download authorization:** `GET /books/{id}/cover` requires authentication under CA-01.3. The authorized role is not stated and must be confirmed by the project owner; the endpoint is not public.
 - **ISBN updates:** `PUT /books/{id}` lists title, author, category, and total copies, but does not say whether ISBN can be changed.
 - **Response schemas:** complete response shapes are not provided for every list and detail endpoint. The examples in this document do not define omitted fields.
 - **Pagination boundaries:** `size` has a maximum of 50, but behavior for missing, nonnumeric, zero, negative, or greater-than-50 values is unspecified.
+
+The unspecified ISBN behavior does not authorize adding ISBN to the update payload. Preserve the documented field list unless the project owner clarifies it. Likewise, missing response examples are not permission to add fields, routes, or rules. See the [source review and scope guardrails](../laravel-react-adaptation.md#original-specification-review) for additional unresolved issues.
