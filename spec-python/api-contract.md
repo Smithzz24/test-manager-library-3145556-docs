@@ -103,6 +103,7 @@ The HTTP contract is **language-independent**: an implementation in React + Lara
 | POST | `/books` | admin | Creates a book |
 | PUT | `/books/{id}` | admin | Replaces title, author, category, and total copies |
 | DELETE | `/books/{id}` | admin | Soft delete |
+| GET | `/books/{id}/cover` | TBD (owner confirmation required) | Returns the cover binary or 404 |
 | PUT | `/books/{id}/cover` | admin | Uploads a cover (`multipart/form-data`, field `file`) |
 | DELETE | `/books/{id}/cover` | admin | Removes the cover |
 
@@ -184,3 +185,12 @@ One row per frozen `book_id + book_title + category_name`. Order: `times_borrowe
 | Authorization | Checked on every endpoint by role; a 403 does not reveal whether the resource exists |
 | CORS | Only the frontend origin configured through the environment |
 | Cover upload | `image/jpeg` and `image/png` only, max 2 MB; validate the content, not the extension |
+
+## 5. Contract details pending confirmation
+
+The following details are not settled by the current specification. Do not infer behavior until the project owner confirms it:
+
+- **Cover download authorization:** the contract mentions `GET /books/{id}/cover` and says it returns the binary or 404, but does not state the required role. The role is intentionally marked as pending in the endpoint table.
+- **ISBN updates:** `PUT /books/{id}` lists title, author, category, and total copies, but does not say whether ISBN can be changed.
+- **Response schemas:** complete response shapes are not provided for every list and detail endpoint. The examples in this document do not define omitted fields.
+- **Pagination boundaries:** `size` has a maximum of 50, but behavior for missing, nonnumeric, zero, negative, or greater-than-50 values is unspecified.

@@ -77,7 +77,7 @@ As a user, I want to authenticate so I can operate according to my role.
 - **CA-09.2** Sort by greatest lateness first. Admin and librarian only.
 
 ### HU-10 · Most-borrowed book report
-- **CA-10.1** For a date range, return one row per **book and frozen category name**, with the number of times borrowed, ordered from highest to lowest.
+- **CA-10.1** For a date range, return one row per distinct **`book_id`, frozen `book_title`, and frozen `category_name`** combination, with the number of times borrowed. Order by count descending, then title, as specified in the API contract and ADR-004. A change to the frozen category or title can therefore produce a separate row.
 - **CA-10.2** End before start: 422. A range with no loans returns an empty list, not an error.
 - **CA-10.3** The report is **not** broken down by librarian or member.
 - **CA-10.4** A report for a closed period does **not** change if the book or its category is later renamed.
