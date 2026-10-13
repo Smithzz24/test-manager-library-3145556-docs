@@ -65,6 +65,8 @@ If the data document and the database disagree, the document is broken and must 
 
 Code, columns, and routes are in English. Documentation and user-facing messages are in Spanish.
 
+**Translation note:** the sentence above preserves the original Article XI. The user requested English documentation for this fork and reconfirmed that choice during the source review. This is a documentation-language deviation, not evidence that the project owner has waived Article XI. User-facing messages remain in Spanish; no product rule changes.
+
 ## Article XII — Nothing is complete without evidence
 
 A task in [`tasks.md`](tasks.md) is complete when its **evidence** exists and can be executed, not when it is “already programmed.”
