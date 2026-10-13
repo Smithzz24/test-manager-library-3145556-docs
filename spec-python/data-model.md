@@ -115,6 +115,10 @@ Cross-cutting rules: **all timestamps are `timestamptz`**; there are **no audit 
 
 ## 4. Constraints and indexes: where each rule is enforced
 
+### Open issue: optimistic-concurrency version token
+
+[ADR-002](adr/adr-002-concurrencia-optimista.md) says each book carries a version token, and T-13 requires the loan repository to use one. The physical model in §3 does not define a corresponding column or its type. The token's column name, type, and update semantics therefore remain **unresolved**; confirm them with the project owner before finalizing the schema. Do not infer a column from the current documents.
+
 | Rule | Database object | Label |
 |---|---|---|
 | Primary keys for the six tables | `PK_*` | **database** |
